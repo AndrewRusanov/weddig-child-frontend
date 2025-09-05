@@ -9,6 +9,8 @@ import {
 } from 'recharts'
 import type { ValuesDTO } from './types'
 
+// For pushing
+
 const API_BASE = import.meta.env.VITE_API_BASE_URL?.replace(/\/+$/, '') || ''
 
 export default function App() {
