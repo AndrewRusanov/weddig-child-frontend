@@ -24,9 +24,12 @@ export default function App() {
       if (fallbackTimer.current) return
       async function tick() {
         try {
-          const res = await fetch(`${API_BASE}/api/values`, {
-            cache: 'no-store',
-          })
+          const res = await fetch(
+            `https://weddig-child-backend.onrender.com/api/values`,
+            {
+              cache: 'no-store',
+            }
+          )
           if (!res.ok) throw new Error(`HTTP ${res.status}`)
           const json = (await res.json()) as ValuesDTO
           setData(json)
