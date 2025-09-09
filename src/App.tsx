@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts'
 import type { ValuesDTO } from './types'
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL?.replace(/\/+$/, '') || ''
+const API_BASE = 'https://weddig-child-backend.onrender.com'
 
 const COLOR_MAP: Record<string, string> = {
   Мальчик: '#56b0cbff',
