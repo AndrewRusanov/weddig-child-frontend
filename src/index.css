@@ -1,6 +1,8 @@
+@import url('./fonts/font.css');
+
 :root {
-  --bg: #0b1020;
-  --card: #111735;
+  --bg: #5a6b47;
+  --card: #5a6b47;
   --text: #f5f7ff;
   --muted: #aab1d0;
   --accent: #4e8cff;
@@ -9,7 +11,9 @@
 
 * {
   box-sizing: border-box;
+  outline: none;
 }
+
 html,
 body,
 #root {
@@ -17,9 +21,9 @@ body,
 }
 body {
   margin: 0;
-  font-family: system-ui, Arial;
+  font-family: 'Ambidexter', system-ui, Arial;
   color: var(--text);
-  background: linear-gradient(180deg, #0c1228, #071025);
+  background: var(--bg);
   padding: 32px;
 }
 .page {
@@ -27,30 +31,29 @@ body {
   place-items: center;
   min-height: 100%;
 }
+
+.title {
+  font-size: 78px;
+  color: #f3b216;
+}
 .card {
-  width: min(880px, 100%);
+  width: 100%;
+  height: 847px;
   background: var(--card);
   padding: 20px;
   border-radius: 16px;
-}
-.muted {
-  color: var(--muted);
-}
-.values {
   display: flex;
-  gap: 16px;
+  flex-direction: column;
   align-items: center;
-  margin-bottom: 12px;
+  justify-content: center;
 }
-.stamp {
-  margin-left: auto;
-  color: var(--muted);
-  font-size: 12px;
-}
+
 .chart {
-  background: rgba(255, 255, 255, 0.03);
-  padding: 10px;
+  padding: 20px;
   border-radius: 10px;
+  width: 100%;
+  height: 720px;
+  font-family: 'FuturaPT';
 }
 .error {
   background: rgba(255, 93, 122, 0.08);

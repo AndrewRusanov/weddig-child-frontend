@@ -1,0 +1,16 @@
+@font-face {
+  font-family: 'Ambidexter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('./Ambidexter_Regular.woff') format('woff'),
+    url('./Ambidexter_Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'FuturaPT';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('./FuturaPT.woff') format('woff');
+}

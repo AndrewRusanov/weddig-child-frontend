@@ -1,69 +1,46 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useMemo, useRef, useState } from 'react'
-import {
-  Cell,
-  Legend,
-  Pie,
-  PieChart,
-  ResponsiveContainer,
-  Tooltip,
-} from 'recharts'
+import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts'
 import type { ValuesDTO } from './types'
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL?.replace(/\/+$/, '') || ''
 
+const COLOR_MAP: Record<string, string> = {
+  Мальчик: '#56b0cbff',
+  Девочка: '#FF9EA7',
+}
+
+const COLOR_STROKE_MAP: Record<string, string> = {
+  Мальчик: '#2a5360ff',
+  Девочка: '#724d50ff',
+}
+
 export default function App() {
   const [data, setData] = useState<ValuesDTO | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const fallbackTimer = useRef<number | null>(null)
+  const timer = useRef<number | null>(null)
 
   useEffect(() => {
-    const sseUrl = `${API_BASE}/api/stream`
-    let es: EventSource | null = null
-
-    function startPolling() {
-      if (fallbackTimer.current) return
-      async function tick() {
-        try {
-          const res = await fetch(
-            `https://weddig-child-backend.onrender.com/api/values`,
-            {
-              cache: 'no-store',
-            }
-          )
-          if (!res.ok) throw new Error(`HTTP ${res.status}`)
-          const json = (await res.json()) as ValuesDTO
-          setData(json)
-          setError(null)
-        } catch (e: any) {
-          setError(e?.message || 'Fetch error')
-        } finally {
-          fallbackTimer.current = window.setTimeout(tick, 5000)
-        }
+    async function fetchData() {
+      try {
+        const res = await fetch(`${API_BASE}/api/values`, {
+          cache: 'no-store',
+        })
+        if (!res.ok) throw new Error(`HTTP ${res.status}`)
+        const json = (await res.json()) as ValuesDTO
+        setData(json)
+        setError(null)
+      } catch (e: any) {
+        setError(e?.message || 'Fetch error')
+      } finally {
+        timer.current = window.setTimeout(fetchData, 5000)
       }
-      tick()
     }
 
-    try {
-      es = new EventSource(sseUrl)
-      es.onmessage = ev => {
-        try {
-          const payload: ValuesDTO = JSON.parse(ev.data)
-          setData(payload)
-          setError(null)
-        } catch {}
-      }
-      es.onerror = () => {
-        setError('SSE failed — falling back to polling')
-        es?.close()
-        startPolling()
-      }
-    } catch {
-      startPolling()
-    }
+    fetchData()
 
     return () => {
-      es?.close()
-      if (fallbackTimer.current) clearTimeout(fallbackTimer.current)
+      if (timer.current) clearTimeout(timer.current)
     }
   }, [])
 
@@ -71,8 +48,8 @@ export default function App() {
     () =>
       data
         ? [
-            { name: 'A', value: data.a },
-            { name: 'B', value: data.b },
+            { name: 'Мальчик', value: data.a },
+            { name: 'Девочка', value: data.b },
           ]
         : [],
     [data]
@@ -81,45 +58,32 @@ export default function App() {
   return (
     <div className='page'>
       <div className='card'>
-        <h1>Sheets → Pie</h1>
-        <p className='muted'>
-          Диапазон: <code>A2:B2</code>
-        </p>
-
+        <h1 className='title'>Кто будет первым?</h1>
         {error && <div className='error'>Ошибка: {error}</div>}
 
         {!data ? (
           <div className='loading'>Загрузка…</div>
         ) : (
           <>
-            <div className='values'>
-              <div>
-                <b>A:</b> {data.a}
-              </div>
-              <div>
-                <b>B:</b> {data.b}
-              </div>
-              <div className='stamp'>
-                Обновлено: {new Date(data.updatedAt).toLocaleString()}
-              </div>
-            </div>
-
             <div className='chart'>
-              <ResponsiveContainer width='100%' height={320}>
+              <ResponsiveContainer width='100%' height={620}>
                 <PieChart>
                   <Pie
                     data={chartData}
                     dataKey='value'
                     nameKey='name'
-                    label
-                    outerRadius={120}
+                    label={({ percent }) => `${(percent * 100).toFixed(0)}%`} // проценты
+                    outerRadius={300}
                   >
-                    {chartData.map((_, i) => (
-                      <Cell key={i} />
+                    {chartData.map((entry, i) => (
+                      <Cell
+                        key={i}
+                        fill={COLOR_MAP[entry.name] || '#8884d8'}
+                        stroke={COLOR_STROKE_MAP[entry.name] || '#8884d8'}
+                      />
                     ))}
                   </Pie>
                   <Tooltip />
-                  <Legend />
                 </PieChart>
               </ResponsiveContainer>
             </div>
