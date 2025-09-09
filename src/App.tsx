@@ -72,7 +72,7 @@ export default function App() {
                     data={chartData}
                     dataKey='value'
                     nameKey='name'
-                    label={({ percent }) => `${(percent * 100).toFixed(0)}%`} // проценты
+                    label={({ percent }) => `${(percent! * 100).toFixed(0)}%`} // проценты
                     outerRadius={300}
                   >
                     {chartData.map((entry, i) => (
