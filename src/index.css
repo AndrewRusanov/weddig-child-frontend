@@ -48,6 +48,23 @@ body {
   justify-content: center;
 }
 
+.phones {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  font-size: 42px;
+  /*font-family: 'FuturaPT';*/
+}
+
+.girl {
+  color: #ff9ea7;
+}
+
+.boy {
+  color: #56b0cbff;
+}
+
 .chart {
   padding: 20px;
   border-radius: 10px;

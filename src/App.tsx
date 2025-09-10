@@ -65,6 +65,10 @@ export default function App() {
           <div className='loading'>Загрузка…</div>
         ) : (
           <>
+            <div className='phones'>
+              <span className='boy'>{'+7 (951) 137-58-50'}</span>
+              <span className='girl'>{'+7 (910) 327-91-55'}</span>
+            </div>
             <div className='chart'>
               <ResponsiveContainer width='100%' height={620}>
                 <PieChart>
